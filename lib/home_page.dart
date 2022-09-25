@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jipsa/feed_screen.dart';
+import 'package:jipsa/screens/feed_screen.dart';
+import 'package:jipsa/screens/profile_screen.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -41,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     Container(color: Colors.greenAccent),
     Container(color: Colors.blueAccent),
     Container(color: Colors.purpleAccent),
-    Container(color: Colors.cyanAccent),
+    ProfileScreen(),
   ];
 
   @override
