@@ -1,31 +1,210 @@
 import 'package:flutter/material.dart';
 import 'package:jipsa/constants/common_size.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:jipsa/screens/profile_screen.dart';
+import 'package:jipsa/widgets/avatar.dart';
 
 class ProfileBody extends StatefulWidget {
-  const ProfileBody({Key? key}) : super(key: key);
+  final Function onMenuChanged;
+
+  const ProfileBody({Key? key, required this.onMenuChanged}) : super(key: key);
 
   @override
   State<ProfileBody> createState() => _ProfileBodyState();
 }
 
-class _ProfileBodyState extends State<ProfileBody> {
-  bool selectedLeft = true;
+class _ProfileBodyState extends State<ProfileBody>
+    with SingleTickerProviderStateMixin {
+  SelectedTab _selectedTab = SelectedTab.left;
+  double _leftImagePagerMargin = 0;
+  double _rightImagePagerMargin = 0;
+  // AnimationController _animationController = AnimationController(
+  //   vsync: this,
+  //   duration: Duration(
+  //     milliseconds: 300,
+  //   ),
+  // );
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    // _animationController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: CustomScrollView(
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                _username(),
-                _userbio(),
-                _editProfileBtn(),
-                _tabBtn(),
+    _rightImagePagerMargin = MediaQuery.of(context).size.width;
+
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _appbar(),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(
+                              common_gap,
+                            ),
+                            child: Avatar(
+                              size: 80,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: common_gap,
+                              ),
+                              child: Table(
+                                children: [
+                                  TableRow(
+                                    children: [
+                                      _valueText('123123'),
+                                      _valueText('12123'),
+                                      _valueText('1123'),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      _labelText('Posts'),
+                                      _labelText('Followers'),
+                                      _labelText('Following'),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      _username(),
+                      _userbio(),
+                      _editProfileBtn(),
+                      _tabBtn(),
+                    ],
+                  ),
+                ),
+                _imagesPager()
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Row _appbar() {
+    return Row(
+      children: [
+        const Expanded(
+          child: Text(
+            '282.the.traveler',
+            textAlign: TextAlign.center,
+          ),
+        ),
+        // IconButton(
+        //   onPressed: () {
+        //     widget.onMenuChanged();
+        //   },
+          // icon: AnimatedIcon(
+          //   icon: AnimatedIcons.menu_close,
+          //   progress: null,
+          // ),
+        // ),
+      ],
+    );
+  }
+
+  Text _valueText(String value) {
+    return Text(
+      value,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Text _labelText(String label) {
+    return Text(
+      label,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontWeight: FontWeight.w300,
+        fontSize: 11,
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _imagesPager() {
+    return SliverToBoxAdapter(
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            duration: Duration(
+              milliseconds: 300,
+            ),
+            transform: (Matrix4.translationValues(
+              _leftImagePagerMargin,
+              0,
+              0,
+            )),
+            curve: Curves.fastOutSlowIn,
+            child: _images(),
+          ),
+          AnimatedContainer(
+            duration: Duration(
+              milliseconds: 300,
+            ),
+            transform: (Matrix4.translationValues(
+              _rightImagePagerMargin,
+              0,
+              0,
+            )),
+            curve: Curves.fastOutSlowIn,
+            child: _images(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _tabSelected(SelectedTab selectedTab) {
+    setState(() {
+      switch (selectedTab) {
+        case SelectedTab.left:
+          _selectedTab = SelectedTab.left;
+          _leftImagePagerMargin = 0;
+          _rightImagePagerMargin = MediaQuery.of(context).size.width;
+          break;
+        case SelectedTab.right:
+          _selectedTab = SelectedTab.right;
+          _rightImagePagerMargin = 0;
+          _leftImagePagerMargin = -MediaQuery.of(context).size.width;
+          break;
+      }
+    });
+  }
+
+  GridView _images() {
+    return GridView.count(
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 3,
+      shrinkWrap: true,
+      childAspectRatio: 1,
+      children: List.generate(
+        30,
+        (index) => CachedNetworkImage(
+          fit: BoxFit.cover,
+          imageUrl: 'https://picsum.photo/id/$index/100/100',
+        ),
       ),
     );
   }
@@ -36,30 +215,30 @@ class _ProfileBodyState extends State<ProfileBody> {
         Expanded(
           child: IconButton(
             icon: ImageIcon(
-              AssetImage(
+              const AssetImage(
                 'assets/images/grid.png',
               ),
-              color: selectedLeft ? Colors.black87 : Colors.black26,
+              color: _selectedTab == SelectedTab.left
+                  ? Colors.black87
+                  : Colors.black26,
             ),
             onPressed: () {
-              setState(() {
-                selectedLeft = true;
-              });
+              _tabSelected(SelectedTab.left);
             },
           ),
         ),
         Expanded(
           child: IconButton(
             icon: ImageIcon(
-              AssetImage(
+              const AssetImage(
                 'assets/images/saved.png',
               ),
-              color: selectedLeft ? Colors.black26 : Colors.black87,
+              color: _selectedTab == SelectedTab.right
+                  ? Colors.black87
+                  : Colors.black26,
             ),
             onPressed: () {
-              setState(() {
-                selectedLeft = false;
-              });
+              _tabSelected(SelectedTab.right);
             },
           ),
         ),
@@ -69,14 +248,14 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   Padding _editProfileBtn() {
     return Padding(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: common_gap,
       ),
       child: SizedBox(
         height: 24,
         child: OutlinedButton(
           onPressed: () {},
-          child: Text(
+          child: const Text(
             'Edit profile',
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -89,8 +268,8 @@ class _ProfileBodyState extends State<ProfileBody> {
   }
 
   Widget _username() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
+    return const Padding(
+      padding: EdgeInsets.symmetric(
         horizontal: common_gap,
       ),
       child: Text(
@@ -103,8 +282,8 @@ class _ProfileBodyState extends State<ProfileBody> {
   }
 
   Widget _userbio() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
+    return const Padding(
+      padding: EdgeInsets.symmetric(
         horizontal: common_gap,
         vertical: common_xxs_gap,
       ),
@@ -117,3 +296,5 @@ class _ProfileBodyState extends State<ProfileBody> {
     );
   }
 }
+
+enum SelectedTab { left, right }

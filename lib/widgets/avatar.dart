@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:jipsa/constants/common_size.dart';
 
-class avatar extends StatelessWidget {
+class Avatar extends StatelessWidget {
   final double size;
-  avatar({
+  Avatar({
     Key? key, this.size=avatar_size,
   }) : super(key: key);
 

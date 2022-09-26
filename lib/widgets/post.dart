@@ -102,7 +102,7 @@ class Post extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(common_xxs_gap),
-          child: avatar(),
+          child: Avatar(),
         ),
         Expanded(
           child: Text('username'),

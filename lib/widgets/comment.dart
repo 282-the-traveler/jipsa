@@ -17,7 +17,7 @@ class Comment extends StatelessWidget {
     return Row(
       children: [
         if(showImage)
-          avatar(
+          Avatar(
             size: 24.0,
           ),
         if (showImage)
