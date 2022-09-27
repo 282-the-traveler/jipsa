@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jipsa/constants/common_size.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:jipsa/screens/profile_screen.dart';
 import 'package:jipsa/widgets/avatar.dart';
 
 class ProfileBody extends StatefulWidget {
@@ -18,23 +17,35 @@ class _ProfileBodyState extends State<ProfileBody>
   SelectedTab _selectedTab = SelectedTab.left;
   double _leftImagePagerMargin = 0;
   double _rightImagePagerMargin = 0;
-  // AnimationController _animationController = AnimationController(
-  //   vsync: this,
-  //   duration: Duration(
-  //     milliseconds: 300,
-  //   ),
-  // );
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    // _animationController.dispose();
+    _animationController.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(
+        milliseconds: 300,
+      ),
+    );
     _rightImagePagerMargin = MediaQuery.of(context).size.width;
+  }
+  @override
+  Widget build(BuildContext context) {
 
     return SafeArea(
       child: Column(
@@ -109,15 +120,18 @@ class _ProfileBodyState extends State<ProfileBody>
             textAlign: TextAlign.center,
           ),
         ),
-        // IconButton(
-        //   onPressed: () {
-        //     widget.onMenuChanged();
-        //   },
-          // icon: AnimatedIcon(
-          //   icon: AnimatedIcons.menu_close,
-          //   progress: null,
-          // ),
-        // ),
+        IconButton(
+          onPressed: () {
+            widget.onMenuChanged();
+            _animationController.status == AnimationStatus.completed
+                ? _animationController.reverse()
+                : _animationController.forward();
+          },
+          icon: AnimatedIcon(
+            icon: AnimatedIcons.menu_close,
+            progress: _animationController,
+          ),
+        ),
       ],
     );
   }
@@ -186,8 +200,8 @@ class _ProfileBodyState extends State<ProfileBody>
           break;
         case SelectedTab.right:
           _selectedTab = SelectedTab.right;
-          _rightImagePagerMargin = 0;
           _leftImagePagerMargin = -MediaQuery.of(context).size.width;
+          _rightImagePagerMargin = 0;
           break;
       }
     });

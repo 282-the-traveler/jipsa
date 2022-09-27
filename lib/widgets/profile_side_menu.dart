@@ -10,12 +10,14 @@ class ProfileSideMenu extends StatelessWidget {
     return SafeArea(
       child: SizedBox(
         width: menuWidth,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             ListTile(
               title: Text(
                 'Setting',
+                style: TextStyle(
+                  color: Colors.black87,
+                ),
               ),
             ),
             ListTile(
@@ -25,6 +27,9 @@ class ProfileSideMenu extends StatelessWidget {
               ),
               title: Text(
                 'Sign out',
+                style: TextStyle(
+                  color: Colors.black87,
+                ),
               ),
             )
           ],
