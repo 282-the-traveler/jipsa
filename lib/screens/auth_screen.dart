@@ -8,7 +8,7 @@ class AuthScreen extends StatefulWidget {
   State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen>{
+class _AuthScreenState extends State<AuthScreen> {
   int selectedForm = 0;
 
   @override
@@ -18,18 +18,43 @@ class _AuthScreenState extends State<AuthScreen>{
         child: Stack(
           children: [
             FadeStack(selectedForm: selectedForm),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  if (selectedForm == 0) {
-                    selectedForm = 1;
-                  } else {
-                    selectedForm = 0;
-                  }
-                });
-              },
-              child: Text(
-                'Go to sign up',
+            const Divider(),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: 40,
+              child: Container(
+                color: Colors.white,
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      if (selectedForm == 0) {
+                        selectedForm = 1;
+                      } else {
+                        selectedForm = 0;
+                      }
+                    });
+                  },
+                  child: RichText(
+                    text: TextSpan(
+                      text: (selectedForm == 0)
+                          ? 'Already have an account? '
+                          : 'Don\'t have an account? ',
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: (selectedForm == 0) ? 'Sign In' : 'Sign Up',
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
           ],

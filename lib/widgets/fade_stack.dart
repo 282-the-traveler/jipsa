@@ -21,7 +21,6 @@ class _FadeStackState extends State<FadeStack>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _animationController = AnimationController(
       vsync: this,
