@@ -44,9 +44,9 @@ class _ProfileBodyState extends State<ProfileBody>
     );
     _rightImagePagerMargin = MediaQuery.of(context).size.width;
   }
+
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

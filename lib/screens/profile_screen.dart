@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jipsa/constants/common_size.dart';
 import 'package:jipsa/widgets/profile_body.dart';
 import 'package:jipsa/widgets/profile_side_menu.dart';
 

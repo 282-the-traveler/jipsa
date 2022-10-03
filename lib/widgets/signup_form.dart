@@ -20,6 +20,8 @@ class _SignUpFormState extends State<SignUpForm> {
     // TODO: implement dispose
     super.dispose();
     _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
   }
 
   @override
@@ -92,36 +94,90 @@ class _SignUpFormState extends State<SignUpForm> {
               SizedBox(
                 height: common_l_gap,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_globalKey.currentState!.validate()) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ),
-                    );
-                  }
-                },
-                child: Text(
-                  'Join',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(150, 50),
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      8.0,
-                    ),
-                  ),
-                ),
-              ),
+              _submitButton(context),
+              _orDivider(),
+              _loginWithFacebookButton(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  InkWell _loginWithFacebookButton() {
+    return InkWell(
+              onTap: (){},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ImageIcon(
+                    AssetImage(
+                      'assets/images/facebook.png',
+                    ),
+                    color: Colors.blue,
+                  ),
+                  Text(
+                    '  Login with Facebook',
+                    style: TextStyle(
+                      color: Colors.blue,
+                    ),
+                  ),
+                ],
+              ),
+            );
+  }
+
+  ElevatedButton _submitButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        if (_globalKey.currentState!.validate()) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ),
+          );
+        }
+      },
+      child: Text(
+        'Join',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(150, 50),
+        backgroundColor: Colors.blue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            8.0,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Stack _orDivider() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        SizedBox(
+          height: 50,
+        ),
+        Divider(
+          height: 5,
+          color: Colors.grey,
+        ),
+        Container(
+          color: Colors.white,
+          child: Text(
+            '  OR  ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
+          ),
+        )
+      ],
     );
   }
 
