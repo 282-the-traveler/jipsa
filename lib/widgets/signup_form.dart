@@ -42,8 +42,10 @@ class _SignUpFormState extends State<SignUpForm> {
               TextFormField(
                 cursorColor: Colors.grey,
                 validator: (text) {
-                  if (text!.isNotEmpty && text.contains('@')) {
-                    return '';
+                  if (text!.isNotEmpty &&
+                      text.contains('@') &&
+                      text.contains('.')) {
+                    return null;
                   } else {
                     return 'check your email address.';
                   }
@@ -58,7 +60,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 cursorColor: Colors.grey,
                 validator: (text) {
                   if (text!.isNotEmpty && text.length >= 8) {
-                    return '';
+                    return null;
                   } else {
                     return 'check your password if it has more than 8 characters.';
                   }
@@ -75,7 +77,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 validator: (text) {
                   if (text!.isNotEmpty && text.length >= 8) {
                     if (text == _passwordController.text) {
-                      return '';
+                      return null;
                     } else {
                       return 'check your confirm password if it is same with the password.';
                     }
@@ -93,7 +95,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ElevatedButton(
                 onPressed: () {
                   if (_globalKey.currentState!.validate()) {
-                    Navigator.of(context).pushReplacement(
+                    Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => HomePage(),
                       ),
