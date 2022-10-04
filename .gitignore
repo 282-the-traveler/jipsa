@@ -11,9 +11,3 @@
 
 # ignore all files in the build/ directory
 build/
-
-# ignore dart tool files 
-.dart_tool/
-
-# ignore flutter plugins dependencies
-.flutter-plugins-dependencies
