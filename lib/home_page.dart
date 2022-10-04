@@ -1,4 +1,7 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:jipsa/screens/camera_screen.dart';
 import 'package:jipsa/screens/feed_screen.dart';
 import 'package:jipsa/screens/profile_screen.dart';
 
@@ -35,7 +38,7 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
-  int _selectedIndex =0;
+  int _selectedIndex = 0;
 
   static List<Widget> _screens = <Widget>[
     FeedScreen(),
@@ -65,8 +68,22 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onBtmItemClick(int index) {
-    setState((){
-      _selectedIndex = index;
-    });
+    switch (index) {
+      case 2:
+        _openCamera();
+        break;
+      default:
+        setState(() {
+          _selectedIndex = index;
+        });
+    }
+  }
+
+  Future<dynamic> _openCamera() {
+    return Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => CameraScreen(),
+        ),
+      );
   }
 }
