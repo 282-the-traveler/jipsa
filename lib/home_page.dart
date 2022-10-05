@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jipsa/screens/camera_screen.dart';
 import 'package:jipsa/screens/feed_screen.dart';
 import 'package:jipsa/screens/profile_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -79,11 +80,37 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<dynamic> _openCamera() {
-    return Navigator.of(context).push(
+  Future<dynamic> _openCamera() async {
+    if (await checkIfPermissionGranted(context)) {
+      return Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => CameraScreen(),
         ),
       );
+    } else {
+      SnackBar snackBar = SnackBar(
+        content: Text(
+          'Please permit to use camera and microphone.',
+        ),
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: (){
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Future<bool> checkIfPermissionGranted(BuildContext context) async {
+    Map<Permission, PermissionStatus> statuses =
+        await [Permission.camera, Permission.microphone].request();
+    bool permitted = true;
+
+    statuses.forEach((permission, permissionStatus) {
+      if (!permissionStatus.isGranted) permitted = false;
+    });
+    return permitted;
   }
 }
