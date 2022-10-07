@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:jipsa/screens/camera_screen.dart';
 import 'package:jipsa/screens/feed_screen.dart';
@@ -40,7 +38,6 @@ class _HomePageState extends State<HomePage> {
   ];
 
   int _selectedIndex = 0;
-
   static List<Widget> _screens = <Widget>[
     FeedScreen(),
     Container(color: Colors.greenAccent),
@@ -109,7 +106,9 @@ class _HomePageState extends State<HomePage> {
     bool permitted = true;
 
     statuses.forEach((permission, permissionStatus) {
-      if (!permissionStatus.isGranted) permitted = false;
+      if (!permissionStatus.isGranted) {
+        permitted = false;
+      }
     });
     return permitted;
   }

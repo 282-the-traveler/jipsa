@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
 
-class TakePhoto extends StatelessWidget {
+class TakePhoto extends StatefulWidget {
   const TakePhoto({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<TakePhoto> createState() => _TakePhotoState();
+}
+
+class _TakePhotoState extends State<TakePhoto> {
+  late CameraController _cameraController;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
